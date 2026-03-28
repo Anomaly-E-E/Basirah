@@ -66,10 +66,12 @@ export default function LeftSidebar({
     <>
       {visible && <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={onClose} />}
       <aside
-        className={`fixed top-14 left-0 bottom-0 z-40 w-[280px] glass-panel flex flex-col transition-transform duration-300 ${
-          visible ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+      style={{ background: 'rgba(30, 28, 28, 0.75)', backdropFilter: 'blur(12px)' }}
+      className={`fixed top-14 left-0 bottom-0 z-40 w-[500px] glass-panel flex flex-col transition-transform duration-300 ${
+                visible ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
+
         {/* Stats */}
         <div className="p-5 pb-0 space-y-3 flex-shrink-0">
           <div>
@@ -144,7 +146,7 @@ export default function LeftSidebar({
         </div>
 
         {/* Crisis list */}
-        <div ref={listRef} className="flex-1 overflow-y-auto px-3 py-2 space-y-1.5">
+        <div ref={listRef} className="flex-1 overflow-y-auto px-3 py-2 space-y-1.5 scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           {filteredZones.map(zone => {
             const isSelected = selectedZone?.id === zone.id;
             return (

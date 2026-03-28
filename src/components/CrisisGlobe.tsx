@@ -73,9 +73,11 @@ const CrisisGlobe = forwardRef<CrisisGlobeHandle, CrisisGlobeProps>(
 
       map.on('style.load', () => {
         map.setFog({
-          color: '#0a0a1a',
-          'high-color': '#1a1a3e',
-          'horizon-blend': 0.04,
+          color: '#000000',
+          'high-color': '#000000',
+          'horizon-blend': 0.0,
+          'space-color': '#000000',
+          'star-intensity': 0.2,
         });
 
         const geojson = toGeoJSON(zones);

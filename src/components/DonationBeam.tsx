@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 
-const DONOR_COORDS: [number, number] = [-79.347, 43.651]; // Toronto
+const DONOR_COORDS: [number, number] = [-79.347, 43.651];
 
 function greatCirclePoints(
   start: [number, number],
@@ -12,11 +12,8 @@ function greatCirclePoints(
 
   for (let i = 0; i <= numPoints; i++) {
     const t = i / numPoints;
-
     const lng = start[0] + (end[0] - start[0]) * t;
     const baseLat = start[1] + (end[1] - start[1]) * t;
-
-    // stronger arc so it feels more dramatic
     const arcHeight = Math.sin(Math.PI * t) * 4.5;
 
     points.push([lng, baseLat + arcHeight]);
@@ -75,7 +72,6 @@ export default function DonationBeam({
       data: pointGeoJson,
     });
 
-    // soft outer glow
     map.addLayer({
       id: glowId,
       type: 'line',
@@ -88,7 +84,6 @@ export default function DonationBeam({
       },
     });
 
-    // bright beam line
     map.addLayer({
       id: lineId,
       type: 'line',
@@ -100,7 +95,6 @@ export default function DonationBeam({
       },
     });
 
-    // moving light head
     map.addLayer({
       id: headId,
       type: 'circle',
@@ -134,7 +128,6 @@ export default function DonationBeam({
         },
       });
 
-      // slight pulse on moving point
       const radius = 5 + Math.sin(frame * 0.25) * 1.5;
       map.setPaintProperty(headId, 'circle-radius', radius);
 
@@ -193,27 +186,25 @@ function rippleEffect(map: mapboxgl.Map, coords: [number, number]) {
     },
   });
 
-  // outer ripple
   map.addLayer({
     id: rippleId,
     type: 'circle',
     source: rippleId,
     paint: {
       'circle-radius': 10,
-      'circle-color': '#F5C842',
+      'circle-color': '#22C55E',
       'circle-opacity': 0.35,
       'circle-blur': 0.8,
     },
   });
 
-  // bright center hit
   map.addLayer({
     id: coreId,
     type: 'circle',
     source: rippleId,
     paint: {
       'circle-radius': 4,
-      'circle-color': '#FFF6CC',
+      'circle-color': '#DCFCE7',
       'circle-opacity': 0.95,
       'circle-blur': 0.1,
     },

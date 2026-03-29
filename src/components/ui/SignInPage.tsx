@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { CanvasRevealEffect } from "@/components/ui/CanvasRevealEffect";
@@ -166,46 +166,25 @@ function EmailStep({
   );
 }
 
-/* ─── Code Step ─── */
+/* ─── Password Step ─── */
 
-function CodeStep({
+function PasswordStep({
   onBack,
   onComplete,
 }: {
   onBack: () => void;
   onComplete: () => void;
 }) {
-  const [code, setCode] = useState<string[]>(Array(6).fill(""));
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-  const completed = code.every((c) => c !== "");
+  const [password, setPassword] = useState("");
 
-  const handleChange = useCallback(
-    (index: number, value: string) => {
-      if (!/^\d?$/.test(value)) return;
-      const next = [...code];
-      next[index] = value;
-      setCode(next);
-
-      if (value && index < 5) {
-        inputRefs.current[index + 1]?.focus();
-      }
-
-      if (next.every((c) => c !== "")) {
-        onComplete();
-      }
-    },
-    [code, onComplete]
-  );
-
-  const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
-    if (e.key === "Backspace" && !code[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password.length > 0) onComplete();
   };
 
   return (
     <motion.div
-      key="code"
+      key="password"
       variants={slideRightVariants}
       initial="enter"
       animate="center"
@@ -214,60 +193,50 @@ function CodeStep({
       className="w-full max-w-lg mx-auto"
     >
       <h1 className="text-5xl md:text-6xl font-bold text-white mb-3 text-center">
-        We sent you a code
+        Enter your password
       </h1>
-      <p className="text-lg text-white/40 mb-10 text-center">Please enter it</p>
+      <p className="text-lg text-white/40 mb-10 text-center">
+        
+      </p>
 
-      <div
-        className={cn(
-          "flex items-center rounded-full overflow-hidden",
-          "bg-white/5 border border-white/10"
-        )}
-      >
-        {code.map((digit, i) => (
-          <div key={i} className="flex items-center flex-1">
-            <input
-              ref={(el) => { inputRefs.current[i] = el; }}
-              type="text"
-              inputMode="numeric"
-              maxLength={1}
-              value={digit}
-              onChange={(e) => handleChange(i, e.target.value)}
-              onKeyDown={(e) => handleKeyDown(i, e)}
-              className={cn(
-                "w-full py-4 text-center text-xl text-white bg-transparent",
-                "focus:outline-none"
-              )}
-            />
-            {i < 5 && <div className="w-px h-7 bg-white/10 shrink-0" />}
-          </div>
-        ))}
-      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="relative">
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            autoFocus
+            className={cn(
+              "w-full py-4 px-6 pr-14 rounded-full text-xl text-white text-center",
+              "bg-white/5 border border-white/10 placeholder:text-white/25",
+              "focus:outline-none focus:border-white/25 transition-colors tracking-[0.5em]"
+            )}
+          />
+        </div>
 
-      <button className="text-sm text-white/40 hover:text-white/60 transition-colors mt-5 block mx-auto">
-        Resend code
-      </button>
-
-      <div className="flex gap-3 mt-8">
-        <button
-          onClick={onBack}
-          className="w-[30%] py-3.5 rounded-full text-sm font-medium bg-white text-black hover:bg-white/90 transition-colors"
-        >
-          Back
-        </button>
-        <button
-          onClick={completed ? onComplete : undefined}
-          disabled={!completed}
-          className={cn(
-            "w-[70%] py-3.5 rounded-full text-sm font-medium transition-colors",
-            completed
-              ? "bg-white text-black hover:bg-white/90"
-              : "bg-white/10 text-white/30 cursor-not-allowed"
-          )}
-        >
-          Continue
-        </button>
-      </div>
+        <div className="flex gap-3 mt-8">
+          <button
+            type="button"
+            onClick={onBack}
+            className="w-[30%] py-3.5 rounded-full text-sm font-medium bg-white text-black hover:bg-white/90 transition-colors"
+          >
+            Back
+          </button>
+          <button
+            type="submit"
+            disabled={password.length === 0}
+            className={cn(
+              "w-[70%] py-3.5 rounded-full text-sm font-medium transition-colors",
+              password.length > 0
+                ? "bg-white text-black hover:bg-white/90"
+                : "bg-white/10 text-white/30 cursor-not-allowed"
+            )}
+          >
+            Continue
+          </button>
+        </div>
+      </form>
     </motion.div>
   );
 }
@@ -340,18 +309,15 @@ interface SignInPageProps {
 }
 
 export default function SignInPage({ onSuccess }: SignInPageProps) {
-  const [step, setStep] = useState<"email" | "code" | "success">("email");
-  const [email, setEmail] = useState("");
+  const [step, setStep] = useState<"email" | "password" | "success">("email");
   const [reverseAnim, setReverseAnim] = useState(false);
 
-  // ✅ FIXED: save email to localStorage when user submits it
   const handleEmailSubmit = useCallback((submittedEmail: string) => {
-    setEmail(submittedEmail);
     localStorage.setItem('userEmail', submittedEmail);
-    setStep("code");
+    setStep("password");
   }, []);
 
-  const handleCodeComplete = useCallback(() => {
+  const handlePasswordComplete = useCallback(() => {
     setReverseAnim(true);
     setTimeout(() => {
       setStep("success");
@@ -375,8 +341,8 @@ export default function SignInPage({ onSuccess }: SignInPageProps) {
             {step === "email" && (
               <EmailStep onSubmit={handleEmailSubmit} onSuccess={onSuccess} />
             )}
-            {step === "code" && (
-              <CodeStep onBack={handleBack} onComplete={handleCodeComplete} />
+            {step === "password" && (
+              <PasswordStep onBack={handleBack} onComplete={handlePasswordComplete} />
             )}
             {step === "success" && (
               <SuccessStep onContinue={onSuccess} />

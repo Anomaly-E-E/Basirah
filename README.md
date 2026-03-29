@@ -58,12 +58,6 @@ cd basirah
 npm install
 ```
 
-Create a `.env` file:
-
-```env
-VITE_MAPBOX_TOKEN=your_mapbox_token
-VITE_GOOGLE_CLIENT_ID=your_google_client_id
-```
 
 ```bash
 npm run dev

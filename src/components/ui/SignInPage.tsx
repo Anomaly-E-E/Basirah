@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { CanvasRevealEffect } from "@/components/ui/CanvasRevealEffect";
+import { useGoogleLogin } from '@react-oauth/google';
 
 /* ─── Floating Navbar ─── */
 
@@ -14,14 +15,11 @@ function SignInNavbar() {
           "bg-white/5 backdrop-blur-xl border border-white/10"
         )}
       >
-        {/* Logo */}
         <div className="grid grid-cols-2 gap-0.5 ml-1">
           {[0, 1, 2, 3].map((i) => (
             <div key={i} className="w-1.5 h-1.5 rounded-full bg-white/80" />
           ))}
         </div>
-
-        {/* Buttons */}
         <button className="px-4 py-1.5 text-sm text-white/80 hover:text-white transition-colors rounded-full border border-white/10">
           Login
         </button>
@@ -33,7 +31,7 @@ function SignInNavbar() {
   );
 }
 
-/* ─── Step Components ─── */
+/* ─── Variants ─── */
 
 const slideLeftVariants = {
   enter: { x: -80, opacity: 0 },
@@ -55,14 +53,26 @@ const fadeUpVariants = {
 
 const transition = { duration: 0.4, ease: "easeOut" };
 
-function EmailStep({ onSubmit }: { onSubmit: (email: string) => void }) {
+/* ─── Email Step ─── */
+
+function EmailStep({
+  onSubmit,
+  onSuccess,
+}: {
+  onSubmit: (email: string) => void;
+  onSuccess: () => void;
+}) {
   const [email, setEmail] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    localStorage.setItem('userEmail', email);
     if (email.trim()) onSubmit(email);
   };
+
+  const login = useGoogleLogin({
+    onSuccess: () => onSuccess(),
+    onError: () => console.log('Login failed'),
+  });
 
   return (
     <motion.div
@@ -72,16 +82,34 @@ function EmailStep({ onSubmit }: { onSubmit: (email: string) => void }) {
       animate="center"
       exit="exit"
       transition={transition}
-      className="w-full max-w-lg mx-auto"
+      className="w-full max-w-4xl mx-auto"
     >
-      <h1 className="text-5xl md:text-6xl font-bold text-white mb-3 text-center">
-        Continue your Impact.
-      </h1>
-      <p className="text-lg text-white/40 mb-10 text-center">
-        Your sign in component
-      </p>
+      <p
+  className="text-7xl md:text-8xl text-white mb-8 text-center"
+  style={{ fontFamily: 'Didot, Bodoni MT, Playfair Display, Georgia, serif', fontWeight: 400, letterSpacing: '0.15em' }}
+>
+  Nabdh
+</p>
+
+<h1
+  className="text-white mb-4 text-center w-full"
+  style={{ 
+    fontFamily: "'Noto Naskh Arabic', serif", 
+    lineHeight: '2',
+    letterSpacing: '0.05em',
+    fontSize: '1.5em',
+    textAlign: 'center',
+  }}
+>
+  الَّذِينَ يُنفِقُونَ أَمْوَالَهُم بِاللَّيْلِ وَالنَّهَارِ سِرًّا وَعَلَانِيَةً فَلَهُمْ أَجْرُهُمْ عِندَ رَبِّهِمْ وَلَا خَوْفٌ عَلَيْهِمْ وَلَا هُمْ يَحْزَنُونَ
+</h1>
+
+<p className="text-xs text-white/40 mb-16 text-center italic leading-relaxed">
+  "Those who spend their wealth by night and by day, secretly and openly — their reward is with their Lord, and there will be no fear upon them, nor will they grieve." — Al-Baqarah 2:274
+</p>
 
       <button
+        onClick={() => login()}
         className={cn(
           "w-full py-4 px-6 rounded-full text-base text-white/90",
           "bg-white/5 backdrop-blur-xl border border-white/10",
@@ -137,6 +165,8 @@ function EmailStep({ onSubmit }: { onSubmit: (email: string) => void }) {
     </motion.div>
   );
 }
+
+/* ─── Code Step ─── */
 
 function CodeStep({
   onBack,
@@ -241,6 +271,8 @@ function CodeStep({
   );
 }
 
+/* ─── Success Step ─── */
+
 function SuccessStep({ onContinue }: { onContinue: () => void }) {
   return (
     <motion.div
@@ -253,7 +285,7 @@ function SuccessStep({ onContinue }: { onContinue: () => void }) {
       className="w-full max-w-lg mx-auto text-center"
     >
       <h1 className="text-5xl md:text-6xl font-bold text-white mb-3">You're in!</h1>
-      <p className="text-lg text-white/40 mb-10">Continue your Impact</p>
+      <p className="text-lg text-white/40 mb-10">Welcome</p>
 
       <motion.div
         initial={{ scale: 0 }}
@@ -336,7 +368,7 @@ export default function SignInPage({ onSuccess }: SignInPageProps) {
         <div className="w-full max-w-xl">
           <AnimatePresence mode="wait">
             {step === "email" && (
-              <EmailStep onSubmit={handleEmailSubmit} />
+              <EmailStep onSubmit={handleEmailSubmit} onSuccess={onSuccess} />
             )}
             {step === "code" && (
               <CodeStep onBack={handleBack} onComplete={handleCodeComplete} />

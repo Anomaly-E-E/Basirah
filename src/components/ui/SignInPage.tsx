@@ -88,7 +88,7 @@ function EmailStep({
         className="text-7xl md:text-8xl text-white mb-8 text-center"
         style={{ fontFamily: 'Didot, Bodoni MT, Playfair Display, Georgia, serif', fontWeight: 400, letterSpacing: '0.15em' }}
       >
-        Nabdh
+        Basirah
       </p>
 
       <h1

@@ -6,7 +6,7 @@ const DONOR_COORDS: [number, number] = [-79.347, 43.651];
 function greatCirclePoints(
   start: [number, number],
   end: [number, number],
-  numPoints = 120
+  numPoints = 70
 ): [number, number][] {
   const points: [number, number][] = [];
 
@@ -214,7 +214,7 @@ function rippleEffect(map: mapboxgl.Map, coords: [number, number]) {
   const totalFrames = 42;
 
   const animateRipple = () => {
-    frame += 1;
+    frame += 10;
     const t = frame / totalFrames;
 
     const radius = 8 + t * 26;

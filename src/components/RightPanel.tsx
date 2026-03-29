@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Users } from 'lucide-react';
+import { X, Users, ExternalLink } from 'lucide-react';
 import { CrisisZone, severityColors, categoryColors, formatUSD, formatNumber } from '@/data/crisisZones';
 
 const QUICK_AMOUNTS = [10, 25, 50, 100];
@@ -17,14 +17,10 @@ export default function RightPanel({ zone, onClose, onDonate }: RightPanelProps)
 
   const amount = selectedAmount ?? (parseFloat(customAmount) || 0);
 
-  // Reset when zone changes
   useEffect(() => {
     setSelectedAmount(null);
     setCustomAmount('');
   }, [zone?.id]);
-
-  const fundColor = (pct: number) =>
-    pct < 30 ? '#E8A020' : pct < 60 ? '#EAD040' : '#2E8B57';
 
   return (
     <AnimatePresence>
@@ -40,7 +36,7 @@ export default function RightPanel({ zone, onClose, onDonate }: RightPanelProps)
             className="fixed top-14 right-0 bottom-0 w-[320px] z-40 glass-panel p-5 overflow-y-auto hidden md:flex flex-col gap-4"
           >
             <PanelContent
-              zone={zone} onClose={onClose} onDonate={onDonate} fundColor={fundColor}
+              zone={zone} onClose={onClose} onDonate={onDonate}
               selectedAmount={selectedAmount} setSelectedAmount={setSelectedAmount}
               customAmount={customAmount} setCustomAmount={setCustomAmount} amount={amount}
             />
@@ -55,7 +51,7 @@ export default function RightPanel({ zone, onClose, onDonate }: RightPanelProps)
             style={{ maxHeight: '60vh' }}
           >
             <PanelContent
-              zone={zone} onClose={onClose} onDonate={onDonate} fundColor={fundColor}
+              zone={zone} onClose={onClose} onDonate={onDonate}
               selectedAmount={selectedAmount} setSelectedAmount={setSelectedAmount}
               customAmount={customAmount} setCustomAmount={setCustomAmount} amount={amount}
             />
@@ -67,13 +63,12 @@ export default function RightPanel({ zone, onClose, onDonate }: RightPanelProps)
 }
 
 function PanelContent({
-  zone, onClose, onDonate, fundColor,
+  zone, onClose, onDonate,
   selectedAmount, setSelectedAmount, customAmount, setCustomAmount, amount,
 }: {
   zone: CrisisZone;
   onClose: () => void;
   onDonate: (type: 'zakat' | 'sadaqah', amount: number) => void;
-  fundColor: (pct: number) => string;
   selectedAmount: number | null;
   setSelectedAmount: (v: number | null) => void;
   customAmount: string;
@@ -82,6 +77,7 @@ function PanelContent({
 }) {
   return (
     <>
+      {/* Header */}
       <div className="flex justify-between items-start">
         <span
           className="text-[11px] px-2.5 py-0.5 rounded-full font-medium uppercase tracking-wider"
@@ -102,6 +98,7 @@ function PanelContent({
         <p className="text-[13px] opacity-40">{zone.country}</p>
       </div>
 
+      {/* Severity dots */}
       <div className="flex gap-1.5">
         {[1, 2, 3, 4].map(i => (
           <span
@@ -116,33 +113,68 @@ function PanelContent({
 
       <div className="h-px bg-white/[0.08]" />
 
+      {/* Our Goal display */}
       <div>
-        <div className="flex justify-between text-[11px] uppercase tracking-wider mb-2">
-          <span className="opacity-40">Funded</span>
-          <span style={{ color: fundColor(zone.funded_percent) }} className="font-medium">
-            {zone.funded_percent}%
-          </span>
-        </div>
-        <div className="h-1.5 rounded-full bg-white/[0.08] overflow-hidden">
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: `${zone.funded_percent}%` }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="h-full rounded-full"
-            style={{ backgroundColor: fundColor(zone.funded_percent) }}
-          />
-        </div>
-        <p className="text-[12px] opacity-40 mt-1.5">
-          {formatUSD(zone.funded_usd)} raised of {formatUSD(zone.needed_usd)} goal
+        <p className="text-[10px] uppercase tracking-widest opacity-40 mb-1">Our Goal</p>
+        <p className="text-[20px] font-medium" style={{ color: '#E8A020' }}>
+          {formatUSD(zone.needed_usd)}
         </p>
+        <p className="text-[11px] opacity-40">Funding target for this crisis</p>
       </div>
 
+      {/* Beneficiaries */}
       <div className="flex items-center gap-2 text-sm opacity-60">
         <Users size={14} />
         <span>{formatNumber(zone.beneficiaries)} people affected</span>
       </div>
 
       <p className="text-[13px] leading-relaxed opacity-50">{zone.description}</p>
+
+      <div className="h-px bg-white/[0.08]" />
+
+      {/* Live Updates */}
+      <div>
+        <p className="text-[10px] uppercase tracking-widest opacity-40 mb-2">Live Updates</p>
+        <div className="space-y-2">
+          {zone.updates.map((update, i) => (
+            <div key={i} className="flex gap-2 items-start">
+              <span className="relative mt-1.5 flex-shrink-0">
+                <span className="block w-2 h-2 rounded-full bg-green-500" />
+                <span className="absolute inset-0 w-2 h-2 rounded-full bg-green-500 animate-ping opacity-50" />
+              </span>
+              <div className="min-w-0">
+                <p className="text-[10px] opacity-40">{update.time}</p>
+                <p className="text-[12px] opacity-70">{update.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="h-px bg-white/[0.08]" />
+
+      {/* Verified Organizations */}
+      <div>
+        <p className="text-[10px] uppercase tracking-widest opacity-40 mb-2">Verified Organizations</p>
+        <div className="space-y-1.5">
+          {zone.organizations.map((org, i) => (
+            <a
+              key={i}
+              href={org.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between px-3 py-2 rounded-lg transition-colors hover:bg-white/[0.06]"
+              style={{ border: '1px solid rgba(255,255,255,0.08)' }}
+            >
+              <span className="text-[12px] text-white/70">{org.name}</span>
+              <span className="flex items-center gap-1.5">
+                <span className="text-[10px] text-green-500 font-medium">Verified</span>
+                <ExternalLink size={10} className="opacity-40" />
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
 
       <div className="h-px bg-white/[0.08]" />
 
@@ -191,14 +223,6 @@ function PanelContent({
           disabled={amount <= 0}
           className="w-full h-11 rounded-lg font-medium text-sm transition-all disabled:opacity-30 disabled:cursor-not-allowed hover:brightness-110"
           style={{ backgroundColor: amount > 0 ? '#C9941A' : '#555', color: '#060810' }}
-        >
-          Give Zakat
-        </button>
-        <button
-          onClick={() => amount > 0 && onDonate('sadaqah', amount)}
-          disabled={amount <= 0}
-          className="w-full h-11 rounded-lg font-medium text-sm border transition-colors disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/[0.06]"
-          style={{ borderColor: amount > 0 ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.08)' }}
         >
           Give Sadaqah
         </button>

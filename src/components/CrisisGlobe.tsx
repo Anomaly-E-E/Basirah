@@ -2,7 +2,7 @@ import { useEffect, useRef, useCallback, useImperativeHandle, forwardRef } from 
 import mapboxgl from 'mapbox-gl';
 import { CrisisZone, toGeoJSON, severityColors } from '@/data/crisisZones';
 
-const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || 'pk.eyJ1IjoiaGFiaWJpcSIsImEiOiJjbW5hZm54NDgwaHlrMnJweXhubW4yZDg5In0.rfTJCKgKfNEvbxmSvYRdMg';
+const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
 
 export interface CrisisGlobeHandle {
   getMap: () => mapboxgl.Map | null;

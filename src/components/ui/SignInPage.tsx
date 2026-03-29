@@ -2,11 +2,17 @@ import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { CanvasRevealEffect } from "@/components/ui/CanvasRevealEffect";
-import { useGoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from "@react-oauth/google";
 
 /* ─── Floating Navbar ─── */
 
-function SignInNavbar() {
+function SignInNavbar({
+  mode,
+  onModeChange,
+}: {
+  mode: "login" | "signup";
+  onModeChange: (mode: "login" | "signup") => void;
+}) {
   return (
     <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
       <div
@@ -20,10 +26,30 @@ function SignInNavbar() {
             <div key={i} className="w-1.5 h-1.5 rounded-full bg-white/80" />
           ))}
         </div>
-        <button className="px-4 py-1.5 text-sm text-white/80 hover:text-white transition-colors rounded-full border border-white/10">
+
+        <button
+          type="button"
+          onClick={() => onModeChange("login")}
+          className={cn(
+            "px-4 py-1.5 text-sm rounded-full transition-colors",
+            mode === "login"
+              ? "bg-white text-black"
+              : "text-white/60 bg-transparent hover:text-white"
+          )}
+        >
           Login
         </button>
-        <button className="px-4 py-1.5 text-sm text-white bg-white/15 rounded-full hover:bg-white/20 transition-colors">
+
+        <button
+          type="button"
+          onClick={() => onModeChange("signup")}
+          className={cn(
+            "px-4 py-1.5 text-sm rounded-full transition-colors",
+            mode === "signup"
+              ? "bg-white text-black"
+              : "text-white/60 bg-transparent hover:text-white"
+          )}
+        >
           Signup
         </button>
       </div>
@@ -59,19 +85,19 @@ function EmailStep({
   onSubmit,
   onSuccess,
 }: {
-  onSubmit: (email: string) => void;
+  onSubmit: () => void;
   onSuccess: () => void;
 }) {
   const [email, setEmail] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.trim()) onSubmit(email.trim());
+    if (email.trim()) onSubmit();
   };
 
   const login = useGoogleLogin({
     onSuccess: () => onSuccess(),
-    onError: () => console.log('Login failed'),
+    onError: () => console.log("Login failed"),
   });
 
   return (
@@ -85,30 +111,31 @@ function EmailStep({
       className="w-full max-w-4xl mx-auto"
     >
       <p
-        className="text-7xl md:text-8xl text-white mb-8 text-center"
-        style={{ fontFamily: 'Didot, Bodoni MT, Playfair Display, Georgia, serif', fontWeight: 400, letterSpacing: '0.15em' }}
-      >
-        Basirah
-      </p>
+  className="text-7xl md:text-8xl text-white mb-8 text-center"
+  style={{ fontFamily: 'Didot, Bodoni MT, Playfair Display, Georgia, serif', fontWeight: 400, letterSpacing: '0.15em' }}
+>
+  Basirah
+</p>
 
-      <h1
-        className="text-white mb-4 text-center w-full"
-        style={{
-          fontFamily: "'Noto Naskh Arabic', serif",
-          lineHeight: '2',
-          letterSpacing: '0.05em',
-          fontSize: '1.5em',
-          textAlign: 'center',
-        }}
-      >
-        الَّذِينَ يُنفِقُونَ أَمْوَالَهُم بِاللَّيْلِ وَالنَّهَارِ سِرًّا وَعَلَانِيَةً فَلَهُمْ أَجْرُهُمْ عِندَ رَبِّهِمْ وَلَا خَوْفٌ عَلَيْهِمْ وَلَا هُمْ يَحْزَنُونَ
-      </h1>
+<h1
+  className="text-white mb-4 text-center w-full"
+  style={{
+    fontFamily: "'Noto Naskh Arabic', serif",
+    lineHeight: '2',
+    letterSpacing: '0.05em',
+    fontSize: '1.5em',
+    textAlign: 'center',
+  }}
+>
+  الَّذِينَ يُنفِقُونَ أَمْوَالَهُم بِاللَّيْلِ وَالنَّهَارِ سِرًّا وَعَلَانِيَةً فَلَهُمْ أَجْرُهُمْ عِندَ رَبِّهِمْ وَلَا خَوْفٌ عَلَيْهِمْ وَلَا هُمْ يَحْزَنُونَ
+</h1>
 
-      <p className="text-xs text-white/40 mb-16 text-center italic leading-relaxed">
-        "Those who spend their wealth by night and by day, secretly and openly — their reward is with their Lord, and there will be no fear upon them, nor will they grieve." — Al-Baqarah 2:274
-      </p>
+<p className="text-xs text-white/40 mb-16 text-center italic leading-relaxed">
+  "Those who spend their wealth by night and by day, secretly and openly — their reward is with their Lord, and there will be no fear upon them, nor will they grieve." — Al-Baqarah 2:274
+</p>
 
       <button
+        type="button"
         onClick={() => login()}
         className={cn(
           "w-full py-4 px-6 rounded-full text-base text-white/90",
@@ -195,8 +222,9 @@ function PasswordStep({
       <h1 className="text-5xl md:text-6xl font-bold text-white mb-3 text-center">
         Enter your password
       </h1>
+
       <p className="text-lg text-white/40 mb-10 text-center">
-        
+        Welcome back
       </p>
 
       <form onSubmit={handleSubmit}>
@@ -241,6 +269,140 @@ function PasswordStep({
   );
 }
 
+/* ─── Signup Step ─── */
+
+function SignupStep({
+  onSubmit,
+  onGoogleSuccess,
+}: {
+  onSubmit: () => void;
+  onGoogleSuccess: () => void;
+}) {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const signupWithGoogle = useGoogleLogin({
+    onSuccess: () => onGoogleSuccess(),
+    onError: () => console.log("Signup failed"),
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const trimmedName = fullName.trim();
+    const trimmedEmail = email.trim();
+    const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail);
+
+    if (!trimmedName || !trimmedEmail || !password || !confirmPassword) {
+      setError("All fields are required");
+      return;
+    }
+
+    if (!emailIsValid) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    setError("");
+    onSubmit();
+  };
+
+  const inputClassName = cn(
+    "w-full py-4 px-6 rounded-full text-base text-white text-center",
+    "bg-white/5 border border-white/10 placeholder:text-white/25",
+    "focus:outline-none focus:border-white/25 transition-colors"
+  );
+
+  return (
+    <motion.div
+      key="signup"
+      variants={slideRightVariants}
+      initial="enter"
+      animate="center"
+      exit="exit"
+      transition={transition}
+      className="w-full max-w-lg mx-auto"
+    >
+      <h1 className="text-5xl md:text-6xl font-bold text-white mb-3 text-center">
+        Create your account
+      </h1>
+
+      <p className="text-lg text-white/40 mb-10 text-center">
+        Start your journey with Basirah
+      </p>
+
+      <button
+        type="button"
+        onClick={() => signupWithGoogle()}
+        className={cn(
+          "w-full py-4 px-6 rounded-full text-base text-white/90",
+          "bg-white/5 backdrop-blur-xl border border-white/10",
+          "hover:bg-white/10 transition-colors flex items-center justify-center gap-3"
+        )}
+      >
+        <span className="text-lg font-semibold">G</span>
+        Sign up with Google
+      </button>
+
+      <div className="flex items-center gap-4 my-6">
+        <div className="flex-1 h-px bg-white/10" />
+        <span className="text-sm text-white/30">or</span>
+        <div className="flex-1 h-px bg-white/10" />
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-3">
+        <input
+          type="text"
+          value={fullName}
+          onChange={(e) => { setFullName(e.target.value); if (error) setError(""); }}
+          placeholder="Your full name"
+          className={inputClassName}
+        />
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => { setEmail(e.target.value); if (error) setError(""); }}
+          placeholder="example@gmail.com"
+          className={inputClassName}
+        />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => { setPassword(e.target.value); if (error) setError(""); }}
+          placeholder="Create a password"
+          className={inputClassName}
+        />
+        <input
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => { setConfirmPassword(e.target.value); if (error) setError(""); }}
+          placeholder="Confirm your password"
+          className={inputClassName}
+        />
+
+        {error && (
+          <p className="text-sm text-red-400 text-center">{error}</p>
+        )}
+
+        <button
+          type="submit"
+          className="w-full py-3.5 rounded-full text-sm font-medium bg-white text-black hover:bg-white/90 transition-colors"
+        >
+          Create Account
+        </button>
+      </form>
+    </motion.div>
+  );
+}
+
 /* ─── Success Step ─── */
 
 function SuccessStep({ onContinue }: { onContinue: () => void }) {
@@ -269,6 +431,7 @@ function SuccessStep({ onContinue }: { onContinue: () => void }) {
       </motion.div>
 
       <button
+        type="button"
         onClick={onContinue}
         className="w-full py-3.5 rounded-full text-sm font-medium bg-white text-black hover:bg-white/90 transition-colors"
       >
@@ -289,7 +452,7 @@ function SideArrow({ direction }: { direction: "left" | "right" }) {
         direction === "left" ? "left-6" : "right-6"
       )}
     >
-      <button className="w-10 h-10 flex items-center justify-center text-white/20 hover:text-white/50 transition-colors">
+      <button type="button" className="w-10 h-10 flex items-center justify-center text-white/20 hover:text-white/50 transition-colors">
         <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
           {direction === "left" ? (
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -309,11 +472,17 @@ interface SignInPageProps {
 }
 
 export default function SignInPage({ onSuccess }: SignInPageProps) {
+  const [mode, setMode] = useState<"login" | "signup">("login");
   const [step, setStep] = useState<"email" | "password" | "success">("email");
   const [reverseAnim, setReverseAnim] = useState(false);
 
-  const handleEmailSubmit = useCallback((submittedEmail: string) => {
-    localStorage.setItem('userEmail', submittedEmail);
+  const handleModeChange = useCallback((nextMode: "login" | "signup") => {
+    setMode(nextMode);
+    setStep("email");
+    setReverseAnim(false);
+  }, []);
+
+  const handleEmailSubmit = useCallback(() => {
     setStep("password");
   }, []);
 
@@ -328,24 +497,43 @@ export default function SignInPage({ onSuccess }: SignInPageProps) {
     setStep("email");
   }, []);
 
+  const handleSignupSubmit = useCallback(() => {
+    setReverseAnim(true);
+    setStep("success");
+  }, []);
+
   return (
     <div className="fixed inset-0 z-50 bg-black overflow-hidden">
       <CanvasRevealEffect reverse={reverseAnim} />
-      <SignInNavbar />
+      <SignInNavbar mode={mode} onModeChange={handleModeChange} />
       <SideArrow direction="left" />
       <SideArrow direction="right" />
 
       <div className="relative z-10 flex items-center justify-center h-full px-6">
         <div className="w-full max-w-xl">
-          <AnimatePresence mode="wait">
-            {step === "email" && (
-              <EmailStep onSubmit={handleEmailSubmit} onSuccess={onSuccess} />
-            )}
-            {step === "password" && (
-              <PasswordStep onBack={handleBack} onComplete={handlePasswordComplete} />
-            )}
-            {step === "success" && (
-              <SuccessStep onContinue={onSuccess} />
+          <AnimatePresence mode="wait" initial={false}>
+            {step === "success" ? (
+              <SuccessStep key="success" onContinue={onSuccess} />
+            ) : mode === "login" ? (
+              step === "email" ? (
+                <EmailStep
+                  key="login-email"
+                  onSubmit={handleEmailSubmit}
+                  onSuccess={onSuccess}
+                />
+              ) : (
+                <PasswordStep
+                  key="login-password"
+                  onBack={handleBack}
+                  onComplete={handlePasswordComplete}
+                />
+              )
+            ) : (
+              <SignupStep
+                key="signup-step"
+                onSubmit={handleSignupSubmit}
+                onGoogleSuccess={onSuccess}
+              />
             )}
           </AnimatePresence>
         </div>

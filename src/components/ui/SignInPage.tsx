@@ -60,6 +60,7 @@ function EmailStep({ onSubmit }: { onSubmit: (email: string) => void }) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    localStorage.setItem('userEmail', email);
     if (email.trim()) onSubmit(email);
   };
 
@@ -74,7 +75,7 @@ function EmailStep({ onSubmit }: { onSubmit: (email: string) => void }) {
       className="w-full max-w-lg mx-auto"
     >
       <h1 className="text-5xl md:text-6xl font-bold text-white mb-3 text-center">
-        Welcome Developer
+        Continue your Impact.
       </h1>
       <p className="text-lg text-white/40 mb-10 text-center">
         Your sign in component
@@ -252,7 +253,7 @@ function SuccessStep({ onContinue }: { onContinue: () => void }) {
       className="w-full max-w-lg mx-auto text-center"
     >
       <h1 className="text-5xl md:text-6xl font-bold text-white mb-3">You're in!</h1>
-      <p className="text-lg text-white/40 mb-10">Welcome</p>
+      <p className="text-lg text-white/40 mb-10">Continue your Impact</p>
 
       <motion.div
         initial={{ scale: 0 }}

@@ -24,11 +24,20 @@ export default function Index() {
     0
   );
 
+  const user = {
+    email: localStorage.getItem('userEmail') || '',
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('userEmail');
+    window.location.reload();
+  };
+
   const handleZoneClick = useCallback((zone: CrisisZone) => {
-    setSelectedZone(zone); 
-    globeRef.current?.flyTo(zone.coordinates, 7,800);
+    setSelectedZone(zone);
+    globeRef.current?.flyTo(zone.coordinates, 7, 800);
   }, []);
- 
+
   const handleCategoryToggle = useCallback((cat: string) => {
     setCategoryFilter((prev) =>
       prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]
@@ -68,7 +77,7 @@ export default function Index() {
           background: 'rgba(10,12,20,0.9)',
           backdropFilter: 'blur(12px)',
           border: '1px solid rgba(255,255,255,0.1)',
-          color: 'white',ƒglo
+          color: 'white',
         },
       }
     );
@@ -83,6 +92,8 @@ export default function Index() {
         totalZones={crisisZones.length}
         fundingGap={fundingGap}
         onMenuToggle={() => setMenuOpen((v) => !v)}
+        user={user}
+        onLogout={handleLogout}
       />
 
       <LeftSidebar

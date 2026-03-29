@@ -33,11 +33,13 @@ export const crisisZones: CrisisZone[] = [
       { time: '1d ago', text: 'WHO reports critical medicine shortage across all northern hospitals' },
     ],
     organizations: [
-      { name: 'Islamic Relief Canada', url: 'https://www.islamicreliefcanada.org' },
-      { name: 'Red Cross Canada', url: 'https://www.redcross.ca' },
-      { name: 'Doctors Without Borders', url: 'https://www.msf.ca' },
+      { name: 'UNICEF', url: 'https://www.unicef.ca/en/what-we-do/emergency-response/israel-gaza' },
+      { name: 'UNRWA', url: 'https://donate.unrwa.org/' },
+      { name: 'Doctors Without Borders (MSF)', url: 'https://www.doctorswithoutborders.ca/genocide-in-gaza/' },
+      { name: 'UN OCHA', url: 'https://crisisrelief.un.org/en/donate-opt-crisis' },
     ],
   },
+
   {
     id: 'sudan',
     name: 'Darfur Region',
@@ -56,11 +58,12 @@ export const crisisZones: CrisisZone[] = [
       { time: '2d ago', text: 'UN warns famine conditions now affecting 5 localities in North Darfur' },
     ],
     organizations: [
-      { name: 'Islamic Relief Canada', url: 'https://www.islamicreliefcanada.org' },
-      { name: 'UNHCR', url: 'https://www.unhcr.org' },
-      { name: 'Human Concern International', url: 'https://www.humanconcern.org' },
+      { name: 'UNICEF', url: 'https://help.unicef.org/en/sudan-emergency' },
+      { name: 'UNHCR', url: 'https://giving.unhcr.org/en/sudan/' },
+      { name: 'Action Against Hunger', url: 'https://www.actionagainsthunger.org/take-action/donate/donate-vrb/' },
     ],
   },
+
   {
     id: 'somalia',
     name: 'Southern Somalia',
@@ -79,10 +82,12 @@ export const crisisZones: CrisisZone[] = [
       { time: '1d ago', text: 'Drought enters 5th consecutive season' },
     ],
     organizations: [
-      { name: 'UNICEF Canada', url: 'https://www.unicef.ca' },
-      { name: 'Penny Appeal Canada', url: 'https://www.pennyappeal.ca' },
+      { name: 'UN OCHA', url: 'https://crisisrelief.un.org/en/donate-somalia-crisis' },
+      { name: 'World Food Programme', url: 'https://www.wfp.org/countries/somalia' },
+      { name: 'UNICEF', url: 'https://www.unicef.org/somalia/take-action' },
     ],
   },
+
   {
     id: 'afghanistan',
     name: 'Kandahar Province',
@@ -100,9 +105,12 @@ export const crisisZones: CrisisZone[] = [
       { time: '12h ago', text: '1 in 3 children under 5 malnourished' },
     ],
     organizations: [
-      { name: 'Islamic Relief Canada', url: 'https://www.islamicreliefcanada.org' },
+      { name: 'UNHCR', url: 'https://give.unhcr.ca/page/86611/donate/1' },
+      { name: 'Islamic Relief', url: 'https://www.canadahelps.org/en/charities/islamic-relief-canada/campaign/afghanistan-emergency-appeal/' },
+      { name: 'Penny Appeal', url: 'https://pennyappeal.ca/countries-we-work-in/afghanistan/' },
     ],
   },
+
   {
     id: 'kashmir',
     name: 'Kashmir Valley',
@@ -119,9 +127,11 @@ export const crisisZones: CrisisZone[] = [
       { time: '6h ago', text: 'Heavy snowfall blocks mountain passes' },
     ],
     organizations: [
-      { name: 'Human Concern International', url: 'https://www.humanconcern.org' },
+      { name: 'UK Islamic Mission', url: 'https://www.ukim.org/appeals/emergency/donate-to-kashmir/' },
+      { name: 'Penny Appeal', url: 'https://pennyappeal.ca/countries-we-work-in/kashmir/' },
     ],
   },
+
   {
     id: 'yemen',
     name: "Sana'a Governorate",
@@ -138,13 +148,15 @@ export const crisisZones: CrisisZone[] = [
       { time: '2h ago', text: 'Airstrike hits residential area' },
     ],
     organizations: [
-      { name: 'Red Cross Canada', url: 'https://www.redcross.ca' },
+      { name: 'UN OCHA', url: 'https://crisisrelief.un.org/en/donate-yemen-crisis' },
+      { name: 'UNICEF', url: 'https://www.unicef.ca/en/children-yemen-need-your-help' },
+      { name: 'World Food Programme', url: 'https://www.wfp.org/support-us/stories/yemencrisis' },
     ],
   },
 
   {
     id: 'rohingya',
-    name: "rohingya",
+    name: "Rohingya (Cox’s Bazar)",
     country: 'Bangladesh',
     severity: 3,
     funded_percent: 38,
@@ -160,7 +172,8 @@ export const crisisZones: CrisisZone[] = [
       { time: '1d ago', text: 'Disease outbreak spreads rapidly with thousands reporting severe diarrhea symptoms' },
     ],
     organizations: [
-      { name: 'UNHCR', url: 'https://www.unhcr.org' },
+      { name: 'UNHCR', url: 'https://giving.unhcr.org/en/fajr-rohingya/' },
+      { name: 'Islamic Relief (via UNHCR)', url: 'https://giving.unhcr.org/en/rohingya/' },
     ],
   },
 
@@ -182,7 +195,8 @@ export const crisisZones: CrisisZone[] = [
       { time: '2d ago', text: 'Entire villages abandoned as insecurity forces mass displacement' },
     ],
     organizations: [
-      { name: 'Red Cross Canada', url: 'https://www.redcross.ca' },
+      { name: 'UNICEF', url: 'https://www.unicef.org/appeals/mali' },
+      { name: 'Islamic Relief', url: 'https://www.islamic-relief.org.uk/where-we-work/country/mali/' },
     ],
   },
 
@@ -204,7 +218,9 @@ export const crisisZones: CrisisZone[] = [
       { time: '1d ago', text: 'Medical facilities overwhelmed as injuries surge following bombardment' },
     ],
     organizations: [
-      { name: 'Doctors Without Borders', url: 'https://www.msf.ca' },
+      { name: 'UNHCR', url: 'https://giving.unhcr.org/en/sy/' },
+      { name: 'Penny Appeal', url: 'https://www.pennyappeal.org.za/syria-appeal' },
+      { name: 'UNICEF', url: 'https://www.unicef.org.au/donate/syria-crisis-appeal' },
     ],
   },
 
@@ -226,7 +242,9 @@ export const crisisZones: CrisisZone[] = [
       { time: '2d ago', text: 'Aid shortages worsen as funding gaps delay critical food deliveries' },
     ],
     organizations: [
-      { name: 'UNICEF Canada', url: 'https://www.unicef.ca' },
+      { name: 'UN OCHA', url: 'https://crisisrelief.un.org/en/donate-ethiopia-crisis' },
+      { name: 'UNICEF', url: 'https://www.unicefusa.org/what-unicef-does/where-unicef-works/africa/ethiopia' },
+      { name: 'Islamic Relief', url: 'https://www.islamic-relief.org.uk/where-we-work/country/ethiopia/' },
     ],
   },
 
@@ -248,7 +266,9 @@ export const crisisZones: CrisisZone[] = [
       { time: '1d ago', text: 'Families forced to relocate again as floodwaters return to rebuilt areas' },
     ],
     organizations: [
-      { name: 'Islamic Relief Canada', url: 'https://www.islamicreliefcanada.org' },
+      { name: 'UN OCHA', url: 'https://crisisrelief.un.org/en/donate-pakistan-crisis' },
+      { name: 'Islamic Relief', url: 'https://donate.islamic-relief.org.pk/' },
+      { name: 'Penny Appeal', url: 'https://pennyappeal.ca/countries-we-work-in/pakistan/' },
     ],
   },
 
@@ -270,10 +290,13 @@ export const crisisZones: CrisisZone[] = [
       { time: '2d ago', text: 'Limited job opportunities drive renewed displacement across region' },
     ],
     organizations: [
-      { name: 'UNHCR', url: 'https://www.unhcr.org' },
+      { name: 'Muslim Aid', url: 'https://www.muslimaid.org/opportunities/iraq-emergency-appeal/mosul-emergency-appeal/' },
+      { name: 'Islamic Relief', url: 'https://www.islamic-relief.org.uk/where-we-work/country/iraq/' },
+      { name: 'Doctors Without Borders', url: 'https://www.msf.org/donate' },
     ],
   },
 ];
+
 
 export const severityColors: Record<number, string> = {
   4: '#CC2200',
@@ -298,4 +321,34 @@ export function formatUSD(value: number): string {
 
 export function formatNumber(value: number): string {
   return new Intl.NumberFormat('en-US').format(value);
+}
+
+
+export function formatCAD(value: number): string {
+  return new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD', maximumFractionDigits: 0 }).format(value);
+}
+
+export function toGeoJSON(zones: CrisisZone[]) {
+  return {
+    type: 'FeatureCollection' as const,
+    features: zones.map(z => ({
+      type: 'Feature' as const,
+      properties: {
+        id: z.id,
+        name: z.name,
+        country: z.country,
+        severity: z.severity,
+        funded_percent: z.funded_percent,
+        needed_usd: z.needed_usd,
+        funded_usd: z.funded_usd,
+        category: z.category,
+        description: z.description,
+        beneficiaries: z.beneficiaries,
+      },
+      geometry: {
+        type: 'Point' as const,
+        coordinates: z.coordinates,
+      },
+    })),
+  };
 }

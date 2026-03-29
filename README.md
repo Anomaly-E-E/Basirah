@@ -74,10 +74,9 @@ npm run dev
 
 ## Origin
 
-Built in **36 hours** at **Ummah Hacks 2026** — the largest Muslim hackathon in North America.
-🥇 1st Place Overall · Yasin Ehsan's Choice Award (a16z Speedrun / Headstarter)
+Built in **36 hours** at **Ummah Hacks 2026** 
 
-**Team:** Muhammad Bin Usman · Abdullah Rajput · Daniel Chen · Elijah Dagbo
+**Team:** Arshan Shareef  .  Humayl Khan
 
 ---
 

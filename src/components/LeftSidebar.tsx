@@ -66,7 +66,7 @@ export default function LeftSidebar({
     <>
       {visible && <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={onClose} />}
       <aside
-      style={{ background: 'rgba(30, 28, 28, 0.75)', backdropFilter: 'blur(12px)' }}
+      style={{ background: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(12px)' }}
       className={`fixed top-14 left-0 bottom-0 z-40 w-[500px] glass-panel flex flex-col transition-transform duration-300 ${
                 visible ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}

@@ -25,10 +25,10 @@ export default function Index() {
   );
 
   const handleZoneClick = useCallback((zone: CrisisZone) => {
-    setSelectedZone(zone);
-    globeRef.current?.flyTo(zone.coordinates, 5, 1800);
+    setSelectedZone(zone); 
+    globeRef.current?.flyTo(zone.coordinates, 7,800);
   }, []);
-
+ 
   const handleCategoryToggle = useCallback((cat: string) => {
     setCategoryFilter((prev) =>
       prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]
@@ -68,7 +68,7 @@ export default function Index() {
           background: 'rgba(10,12,20,0.9)',
           backdropFilter: 'blur(12px)',
           border: '1px solid rgba(255,255,255,0.1)',
-          color: 'white',
+          color: 'white',ƒglo
         },
       }
     );
@@ -104,7 +104,7 @@ export default function Index() {
 
       <BottomLegend />
 
-      <div className="absolute inset-0 pt-14 md:pl-[280px]">
+      <div className="absolute inset-0 pt-14 md:pl-[500px]">
         <CrisisGlobe
           ref={globeRef}
           zones={crisisZones}

@@ -133,3 +133,7 @@
 .live-pulse {
   animation: live-pulse 2s ease-in-out infinite;
 }
+
+button {
+  cursor: pointer;
+}

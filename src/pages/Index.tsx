@@ -17,6 +17,12 @@ export default function Index() {
   const [donatingZoneName, setDonatingZoneName] = useState('');
   const [donatingAmount, setDonatingAmount] = useState(0);
 
+  // ✅ FIXED: user is now proper React state, initialized from localStorage
+  const [user, setUser] = useState<{ email: string } | null>(() => {
+    const email = localStorage.getItem('userEmail');
+    return email ? { email } : null;
+  });
+
   const globeRef = useRef<CrisisGlobeHandle>(null);
 
   const fundingGap = crisisZones.reduce(
@@ -24,13 +30,10 @@ export default function Index() {
     0
   );
 
-  const user = {
-    email: localStorage.getItem('userEmail') || '',
-  };
-
+  // ✅ FIXED: clears state directly instead of reloading the page
   const handleLogout = () => {
     localStorage.removeItem('userEmail');
-    window.location.reload();
+    setUser(null);
   };
 
   const handleZoneClick = useCallback((zone: CrisisZone) => {

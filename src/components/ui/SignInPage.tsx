@@ -66,7 +66,7 @@ function EmailStep({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.trim()) onSubmit(email);
+    if (email.trim()) onSubmit(email.trim());
   };
 
   const login = useGoogleLogin({
@@ -85,28 +85,28 @@ function EmailStep({
       className="w-full max-w-4xl mx-auto"
     >
       <p
-  className="text-7xl md:text-8xl text-white mb-8 text-center"
-  style={{ fontFamily: 'Didot, Bodoni MT, Playfair Display, Georgia, serif', fontWeight: 400, letterSpacing: '0.15em' }}
->
-  Nabdh
-</p>
+        className="text-7xl md:text-8xl text-white mb-8 text-center"
+        style={{ fontFamily: 'Didot, Bodoni MT, Playfair Display, Georgia, serif', fontWeight: 400, letterSpacing: '0.15em' }}
+      >
+        Nabdh
+      </p>
 
-<h1
-  className="text-white mb-4 text-center w-full"
-  style={{ 
-    fontFamily: "'Noto Naskh Arabic', serif", 
-    lineHeight: '2',
-    letterSpacing: '0.05em',
-    fontSize: '1.5em',
-    textAlign: 'center',
-  }}
->
-  الَّذِينَ يُنفِقُونَ أَمْوَالَهُم بِاللَّيْلِ وَالنَّهَارِ سِرًّا وَعَلَانِيَةً فَلَهُمْ أَجْرُهُمْ عِندَ رَبِّهِمْ وَلَا خَوْفٌ عَلَيْهِمْ وَلَا هُمْ يَحْزَنُونَ
-</h1>
+      <h1
+        className="text-white mb-4 text-center w-full"
+        style={{
+          fontFamily: "'Noto Naskh Arabic', serif",
+          lineHeight: '2',
+          letterSpacing: '0.05em',
+          fontSize: '1.5em',
+          textAlign: 'center',
+        }}
+      >
+        الَّذِينَ يُنفِقُونَ أَمْوَالَهُم بِاللَّيْلِ وَالنَّهَارِ سِرًّا وَعَلَانِيَةً فَلَهُمْ أَجْرُهُمْ عِندَ رَبِّهِمْ وَلَا خَوْفٌ عَلَيْهِمْ وَلَا هُمْ يَحْزَنُونَ
+      </h1>
 
-<p className="text-xs text-white/40 mb-16 text-center italic leading-relaxed">
-  "Those who spend their wealth by night and by day, secretly and openly — their reward is with their Lord, and there will be no fear upon them, nor will they grieve." — Al-Baqarah 2:274
-</p>
+      <p className="text-xs text-white/40 mb-16 text-center italic leading-relaxed">
+        "Those who spend their wealth by night and by day, secretly and openly — their reward is with their Lord, and there will be no fear upon them, nor will they grieve." — Al-Baqarah 2:274
+      </p>
 
       <button
         onClick={() => login()}
@@ -256,6 +256,7 @@ function CodeStep({
           Back
         </button>
         <button
+          onClick={completed ? onComplete : undefined}
           disabled={!completed}
           className={cn(
             "w-[70%] py-3.5 rounded-full text-sm font-medium transition-colors",
@@ -340,9 +341,13 @@ interface SignInPageProps {
 
 export default function SignInPage({ onSuccess }: SignInPageProps) {
   const [step, setStep] = useState<"email" | "code" | "success">("email");
+  const [email, setEmail] = useState("");
   const [reverseAnim, setReverseAnim] = useState(false);
 
-  const handleEmailSubmit = useCallback(() => {
+  // ✅ FIXED: save email to localStorage when user submits it
+  const handleEmailSubmit = useCallback((submittedEmail: string) => {
+    setEmail(submittedEmail);
+    localStorage.setItem('userEmail', submittedEmail);
     setStep("code");
   }, []);
 

@@ -72,9 +72,7 @@ npm run dev
 
 ---
 
-## Origin
-
-Built in **36 hours** at **Ummah Hacks 2026** 
+Built in **36 hours** at **MSA Hacks 2026** 
 
 **Team:** Arshan Shareef  .  Humayl Khan
 
